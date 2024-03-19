@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:pawcamkz/main.dart';
-import 'package:pawcamkz/providers/user_provider.dart';
-import 'package:provider/provider.dart';
+
 
 
 
@@ -132,10 +130,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     });
 
                     setState(() {
-                      successMessage = 'Пользователь зарегистрирован: ${userCredential.user?.email}';
                       errorMessage = '';
-                      Navigator.of(context).pop();
-                      Navigator.of(context).pop();
+                      Navigator.pushReplacement(
+              context,
+  MaterialPageRoute(
+    builder: (context) => const MyApp(),
+    fullscreenDialog: true,
+  ),            );
 
                       
                     });
@@ -150,7 +151,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   height: 60,
                   width: 230,
                   decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
+                    color: Theme.of(context).colorScheme.primary,
                     borderRadius: BorderRadius.circular(10),
                     boxShadow: [
                       BoxShadow(
@@ -163,11 +164,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   ),
                   child: Center(
                     child: Text(
-                      'Продолжить',
+                      'Зарегестрироваться',
                       style: TextStyle(
-                        color: Theme.of(context).colorScheme.background,
-                        fontWeight: Theme.of(context).textTheme.headline6?.fontWeight,
-                        fontSize: Theme.of(context).textTheme.headline6?.fontSize,
+                        color: Theme.of(context).textTheme.bodyLarge?.color,
+                        fontWeight: Theme.of(context).textTheme.bodyLarge?.fontWeight,
+                        fontSize: Theme.of(context).textTheme.titleMedium?.fontSize,
                       ),
                     ),
                   ),
@@ -316,15 +317,15 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     return InputDecoration(
       labelText: labelText,
       errorText: errorText.isNotEmpty ? errorText : null,
-      enabledBorder: OutlineInputBorder(
+      enabledBorder: UnderlineInputBorder(
         borderSide: BorderSide(
-          color: Theme.of(context).primaryColor,
+          color: Theme.of(context).colorScheme.primary,
         ),
       ),
       focusedBorder: OutlineInputBorder(
         borderSide: BorderSide(
-          color: Theme.of(context).primaryColor,
-          width: 4,
+          color: Theme.of(context).colorScheme.primary,
+          width: 2,
         ),
       ),
     );

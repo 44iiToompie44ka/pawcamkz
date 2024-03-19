@@ -28,7 +28,7 @@ class ContactsScreen extends StatelessWidget {
 
             ],
           ),
-                        Text("data")
+                        const Text("data")
 
 
         ],

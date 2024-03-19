@@ -1,24 +1,21 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:pawcamkz/screens/registrationNLogin/login_screen.dart';
-import 'package:provider/provider.dart';
+import 'package:pawcamkz/screens/test_screen.dart';
 
-import '../providers/user_provider.dart';
 
 class PaymentHistory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Access the UserProvider using the Provider.of method
-    final userProvider = Provider.of<UserProvider>(context);
-
-    // Check if the user is logged in
-    if (!userProvider.isLoggedIn) {
-      
-      return LoginScreen(); // Return an empty container, or you can show a loading spinner
+    if (FirebaseAuth.instance.currentUser == null){
+      return VideoApp(); 
+    }
+    else {
+      Container();
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Flutter Sample Screen'),
+        title: const Text('Flutter Sample Screen'),
       ),
       body: const Center(
         child: Column(

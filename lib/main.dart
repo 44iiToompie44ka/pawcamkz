@@ -1,77 +1,42 @@
 import 'dart:async';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:pawcamkz/firebase_options.dart';
-import 'package:pawcamkz/providers/user_provider.dart';
+import 'package:pawcamkz/managers/firebase_options.dart';
 import 'package:pawcamkz/screens/main_screen.dart';
 import 'package:pawcamkz/screens/payment_screen.dart';
 import 'package:pawcamkz/screens/menu/menu_widget.dart';
+import 'package:pawcamkz/providers/theme_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  await SharedPreferences.getInstance();
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(const MyApp(),);
-  
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => ThemeProvider(), // Initialize the ThemeProvider
+      child: const MyApp(),
+    ),
+  );
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp();
 
   @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  late StreamSubscription<User?> user;
-
-  void initState() {
-    super.initState();
-    user = FirebaseAuth.instance.authStateChanges().listen((user) {
-      if (user == null) {
-        print('User is currently signed out!');
-        context.read<UserProvider>().isLoggedIn == false; // Use assignment instead of comparison
-
-      } else {
-        print('User is signed in!');
-        context.read<UserProvider>().isLoggedIn == true; // Use assignment instead of comparison
-      }
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Provider(
-
-      create: (BuildContext context) {         ChangeNotifierProvider(create: (_) => UserProvider());
- },
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.purple,
-            primary: Colors.purple,
-            onPrimary: Colors.grey[700],
-          ),
-          textTheme: const TextTheme(
-            labelLarge: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
-            bodyMedium: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
-            titleMedium: TextStyle(fontWeight: FontWeight.w500, fontSize: 16, color: Colors.black54),
-            titleLarge: TextStyle(fontWeight: FontWeight.w500, fontSize: 20, color: Colors.black),
-          ),
-        ),
-        home: const MyHomePage(),
-      ),
+    return Consumer<ThemeProvider>(
+      builder: (_, themeProvider, __) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: themeProvider.themeData,
+          home: const MyHomePage(),
+        );
+      },
     );
   }
 }

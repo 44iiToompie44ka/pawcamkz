@@ -6,9 +6,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pawcamkz/main.dart';
-import 'package:pawcamkz/providers/user_provider.dart';
 import 'package:pawcamkz/screens/registrationNLogin/registration_screen.dart';
-import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -33,10 +31,12 @@ Future<void> validateUser() async {
       final UserCredential? userCredential = await _auth
           .signInWithEmailAndPassword(email: email, password: password);
       if (userCredential != null) {
-          Navigator.push(
+          Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => MyApp()),
-            );
+  MaterialPageRoute(
+    builder: (context) => const MyApp(),
+    fullscreenDialog: true,
+  ),            );
       }
     } catch (e) {
       print(e);
@@ -84,7 +84,7 @@ Future<void> validateUser() async {
                   height: 60,
                   width: 230,
                   decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
+                    color: Theme.of(context).colorScheme.primary,
                     borderRadius: BorderRadius.circular(10),
                     boxShadow: [
                       BoxShadow(
@@ -99,7 +99,7 @@ Future<void> validateUser() async {
                     child: Text(
                       'Войти',
                       style: TextStyle(
-                        color: Theme.of(context).colorScheme.background,
+                        color: Theme.of(context).textTheme.bodyLarge?.color,
                         fontWeight: Theme.of(context).textTheme.headline6?.fontWeight,
                         fontSize: Theme.of(context).textTheme.headline6?.fontSize,
                       ),
@@ -242,15 +242,15 @@ Future<void> validateUser() async {
     return InputDecoration(
       labelText: labelText,
       errorText: errorText.isNotEmpty ? errorText : null,
-      enabledBorder: OutlineInputBorder(
+      enabledBorder: UnderlineInputBorder(
         borderSide: BorderSide(
-          color: Theme.of(context).primaryColor,
+          color: Theme.of(context).colorScheme.primary,
         ),
       ),
       focusedBorder: OutlineInputBorder(
         borderSide: BorderSide(
-          color: Theme.of(context).primaryColor,
-          width: 4,
+          color: Theme.of(context).colorScheme.primary,
+          width: 2,
         ),
       ),
     );
@@ -288,14 +288,14 @@ const kTextFieldDecoration = InputDecoration(
   hintText: 'Enter password',
   contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
   border: OutlineInputBorder(
-    borderRadius: BorderRadius.all(Radius.circular(32.0)),
+    borderRadius: BorderRadius.all(Radius.circular(16.0)),
   ),
-  enabledBorder: OutlineInputBorder(
-    borderSide: BorderSide(color: Colors.blueAccent, width: 1.0),
-    borderRadius: BorderRadius.all(Radius.circular(32.0)),
+  enabledBorder: UnderlineInputBorder(
+    borderSide: BorderSide(color: Colors.white, width: 2.0),
+    borderRadius: BorderRadius.all(Radius.circular(16.0)),
   ),
   focusedBorder: OutlineInputBorder(
-    borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
-    borderRadius: BorderRadius.all(Radius.circular(32.0)),
+    borderSide: BorderSide(color: Colors.white, width: 2.0),
+    borderRadius: BorderRadius.all(Radius.circular(16.0)),
   ),
 );
